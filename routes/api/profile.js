@@ -4,6 +4,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const Profile = require("../../models/Profile");
 const normalize = require("normalize-url");
+
 // @route  GET api/profile/me
 // @desc   Get current users profile
 // @access Private
@@ -100,4 +101,36 @@ router.post(
   }
 );
 
+// @route  GET api/profile/me
+// @desc   Get all profiles
+// @access Public
+router.get("/", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    res.json(profiles);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// @route  GET api/profile/user/:user_id
+// @desc   Get profile by user Id
+// @access Public
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const profiles = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar"]);
+
+    if (!profiles) return res.status(400).json({ msg: "Profile not found" });
+    res.json(profiles);
+  } catch (error) {
+    console.error(error.message);
+    if (error.kind === "ObjectId") {
+      return res.status(400).json({ msg: "Profile not found" });
+    }
+    res.status(500).send("Server error");
+  }
+});
 module.exports = router;
