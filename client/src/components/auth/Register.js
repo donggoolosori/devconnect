@@ -18,7 +18,7 @@ const Register = () => {
       console.log("Passwords do not match");
     } else {
       console.log(formData);
-      console.log("test");
+      console.log("tes");
     }
   };
 
