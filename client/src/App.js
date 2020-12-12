@@ -2,6 +2,11 @@ import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // style
 import "./App.css";
+// Redux
+import { Provider } from "react-redux";
+import store from "./store";
+import { loadUser } from "./actions/auth";
+import setAuthToken from "./utils/setAuthToken";
 // components
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -10,12 +15,8 @@ import Navbar from "./components/layout/Navbar";
 import Alert from "./components/layout/Alert";
 import Dashboard from "./components/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/PrivateRoute";
-// Redux
-import { Provider } from "react-redux";
-import store from "./store";
-import { loadUser } from "./actions/auth";
-import setAuthToken from "./utils/setAuthToken";
 import CreateProfile from "./components/profile-form/CreateProfile";
+import EditProfile from "./components/profile-form/EditProfile";
 
 const App = () => {
   useEffect(() => {
@@ -41,6 +42,11 @@ const App = () => {
                 exact
                 path="/create-profile"
                 component={CreateProfile}
+              />
+              <PrivateRoute
+                exact
+                path="/edit-profile"
+                component={EditProfile}
               />
             </Switch>
           </section>

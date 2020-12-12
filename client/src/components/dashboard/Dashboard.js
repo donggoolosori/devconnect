@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCurrentProfile } from "../../actions/profile";
 import { Link } from "react-router-dom";
 import Spinner from "../layout/Spinner";
+import DashboardActions from "./DashboardActions";
 
 const Dashboard = () => {
   const { profile, loading } = useSelector((state) => state.profile);
@@ -22,7 +23,9 @@ const Dashboard = () => {
         <i className="fas fa-user"></i> Welcome {user && user.name}
       </p>
       {profile ? (
-        <Fragment>has</Fragment>
+        <Fragment>
+          <DashboardActions />
+        </Fragment>
       ) : (
         <Fragment>
           <p>You have not yet setup a profile, please add some info</p>
