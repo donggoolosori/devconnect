@@ -5,8 +5,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateUserDto } from 'src/dto/create-user.dto';
-import { User } from './schema/User.schema';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { Jwt } from './interfaces/jwt.interface';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -15,7 +15,7 @@ export class UsersController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  registerUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+  registerUser(@Body() createUserDto: CreateUserDto): Promise<Jwt> {
     return this.usersService.registerUser(createUserDto);
   }
 }
