@@ -17,6 +17,6 @@ import { UsersService } from './users.service';
   ],
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [JwtModule],
+  exports: [JwtModule, MongooseModule],
 })
 export class UsersModule {}
