@@ -25,7 +25,7 @@ export class AuthController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  login(@Body() loginDto: LoginDto): Promise<any> {
+  login(@Body() loginDto: LoginDto): Promise<Jwt> {
     return this.authService.login(loginDto);
   }
 }

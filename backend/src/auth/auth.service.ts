@@ -18,7 +18,7 @@ export class AuthService {
     return await this.userModel.findById(id).select('-password');
   }
 
-  async login(loginDto: LoginDto): Promise<any> {
+  async login(loginDto: LoginDto): Promise<Jwt> {
     const { email, password } = loginDto;
     let user = await this.userModel.findOne({ email });
 
