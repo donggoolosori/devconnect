@@ -7,7 +7,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     UsersModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forRoot(process.env.MONGODB_URI, { useCreateIndex: true }),
   ],
 })
 export class AppModule {}
