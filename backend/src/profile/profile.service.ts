@@ -2,13 +2,16 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { normalize } from 'path';
-import { User } from 'src/users/schema/User.schema';
+import { User, UserDocument } from 'src/users/schema/User.schema';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './interfaces/profile.interface';
 
 @Injectable()
 export class ProfileService {
-  constructor(@InjectModel('Profile') private profileModel: Model<Profile>) {}
+  constructor(
+    @InjectModel('Profile') private profileModel: Model<Profile>,
+    @InjectModel('User') private userModel: Model<UserDocument>,
+  ) {}
 
   async getMyProfile(id: User): Promise<Profile> {
     const profile = await this.profileModel
@@ -87,5 +90,14 @@ export class ProfileService {
       throw new BadRequestException('Profile not found');
     }
     return profile;
+  }
+
+  async deleteProfile(user_id: User): Promise<any> {
+    // Remove profile
+    await this.profileModel.findOneAndDelete({ user: user_id });
+    // Remove User
+    await this.userModel.findOneAndRemove({ _id: user_id });
+
+    return { msg: 'User deleted' };
   }
 }

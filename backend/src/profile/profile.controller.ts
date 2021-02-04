@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -42,5 +43,11 @@ export class ProfileController {
   @Get('user/:user_id')
   getProfileByUserId(@Param('user_id') user_id: User): Promise<Profile> {
     return this.profileService.getProfileByUserId(user_id);
+  }
+
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  deleteProfile(@Request() req): Promise<any> {
+    return this.profileService.deleteProfile(req.user.id);
   }
 }

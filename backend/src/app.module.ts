@@ -8,13 +8,13 @@ import { ProfileModule } from './profile/profile.module';
 @Module({
   imports: [
     UsersModule,
+    AuthModule,
+    ProfileModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URI, {
       useCreateIndex: true,
       useFindAndModify: true,
     }),
-    AuthModule,
-    ProfileModule,
   ],
 })
 export class AppModule {}
