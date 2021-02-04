@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -9,6 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { User } from 'src/users/schema/User.schema';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './interfaces/profile.interface';
 import { ProfileService } from './profile.service';
@@ -35,5 +37,10 @@ export class ProfileController {
   @Get()
   getAllProfiles(): Promise<Profile[]> {
     return this.profileService.getAllProfiles();
+  }
+
+  @Get('user/:user_id')
+  getProfileByUserId(@Param('user_id') user_id: User): Promise<Profile> {
+    return this.profileService.getProfileByUserId(user_id);
   }
 }

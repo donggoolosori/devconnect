@@ -77,4 +77,15 @@ export class ProfileService {
 
     return profiles;
   }
+
+  async getProfileByUserId(user_id: User): Promise<Profile> {
+    const profile = await this.profileModel
+      .findOne({ user: user_id })
+      .populate('user', ['name', 'avatar']);
+
+    if (!profile) {
+      throw new BadRequestException('Profile not found');
+    }
+    return profile;
+  }
 }
