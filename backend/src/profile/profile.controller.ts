@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Request,
   UseGuards,
   UsePipes,
@@ -12,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/users/schema/User.schema';
+import { CreateExperienceDto } from './dto/create-experience.dto';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './interfaces/profile.interface';
 import { ProfileService } from './profile.service';
@@ -49,5 +51,21 @@ export class ProfileController {
   @UseGuards(JwtAuthGuard)
   deleteProfile(@Request() req): Promise<any> {
     return this.profileService.deleteProfile(req.user.id);
+  }
+
+  @Put('/experience')
+  @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  addExperience(
+    @Body() createExperienceDto: CreateExperienceDto,
+    @Request() req,
+  ): Promise<Profile> {
+    return this.profileService.addExperience(createExperienceDto, req.user.id);
+  }
+
+  @Delete('/experience/:exp_id')
+  @UseGuards(JwtAuthGuard)
+  deleteExperience(@Param('exp_id') exp_id: string, @Request() req) {
+    return this.profileService.deleteExperience(req.user.id, exp_id);
   }
 }

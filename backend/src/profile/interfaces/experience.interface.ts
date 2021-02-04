@@ -7,7 +7,7 @@ export interface Experience {
 
   from: Date;
 
-  to: string;
+  to: Date;
 
   current: boolean;
 

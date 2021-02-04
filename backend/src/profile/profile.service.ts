@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { normalize } from 'path';
 import { User, UserDocument } from 'src/users/schema/User.schema';
+import { CreateExperienceDto } from './dto/create-experience.dto';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './interfaces/profile.interface';
 
@@ -99,5 +100,19 @@ export class ProfileService {
     await this.userModel.findOneAndRemove({ _id: user_id });
 
     return { msg: 'User deleted' };
+  }
+
+  async addExperience(
+    createExperienceDto: CreateExperienceDto,
+    user_id: User,
+  ): Promise<Profile> {
+    const profile = await this.profileModel.findOne({ user: user_id });
+    profile.experience.unshift(createExperienceDto);
+
+    return await profile.save();
+  }
+
+  async deleteExperience(user_id: User, exp_id: string) {
+    const profile = await this.profileModel.findOne({});
   }
 }
