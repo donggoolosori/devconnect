@@ -1,49 +1,111 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Mongoose } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { User } from 'src/users/schema/User.schema';
-import { Experience } from '../interfaces/experience.interface';
-import { Education } from '../interfaces/education.interface';
-import { Social } from '../interfaces/social.interface';
 
-export type ProfileDocument = Profile & Document;
-
-export class Profile {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: User;
-
-  @Prop()
-  company: string;
-
-  @Prop()
-  website: string;
-
-  @Prop()
-  location: string;
-
-  @Prop({ required: true })
-  status: string;
-
-  @Prop({ required: true })
-  skills: string[];
-
-  @Prop()
-  bio: string;
-
-  @Prop()
-  githubusername: string;
-
-  @Prop()
-  experience: Experience[];
-
-  @Prop()
-  education: Education[];
-
-  @Prop()
-  social: Social;
-
-  @Prop({ default: Date.now })
-  date: Date;
-}
-
-export const ProfileSchema = SchemaFactory.createForClass(Profile);
+export const ProfileSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+  },
+  company: {
+    type: String,
+  },
+  website: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  skills: {
+    type: [String],
+    required: true,
+  },
+  bio: {
+    type: String,
+  },
+  githubusername: {
+    type: String,
+  },
+  experience: [
+    {
+      title: {
+        type: String,
+        required: true,
+      },
+      company: {
+        type: String,
+        required: true,
+      },
+      location: {
+        type: String,
+      },
+      from: {
+        type: Date,
+        required: true,
+      },
+      to: {
+        type: Date,
+      },
+      current: {
+        type: Boolean,
+        default: false,
+      },
+      description: {
+        type: String,
+      },
+    },
+  ],
+  education: [
+    {
+      school: {
+        type: String,
+        required: true,
+      },
+      degree: {
+        type: String,
+        required: true,
+      },
+      fieldofstudy: {
+        type: String,
+        required: true,
+      },
+      from: {
+        type: Date,
+        required: true,
+      },
+      to: {
+        type: Date,
+      },
+      current: {
+        type: Boolean,
+        default: false,
+      },
+      description: {
+        type: String,
+      },
+    },
+  ],
+  social: {
+    youtube: {
+      type: String,
+    },
+    twitter: {
+      type: String,
+    },
+    facebook: {
+      type: String,
+    },
+    linkedin: {
+      type: String,
+    },
+    instagram: {
+      type: String,
+    },
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});

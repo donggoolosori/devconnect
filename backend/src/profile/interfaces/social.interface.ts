@@ -1,18 +1,13 @@
 import { Prop } from '@nestjs/mongoose';
 
-export class Social {
-  @Prop()
+export interface Social {
   youtube: string;
 
-  @Prop()
   twitter: string;
 
-  @Prop()
   facebook: string;
 
-  @Prop()
   linkedin: string;
 
-  @Prop()
   instagram: string;
 }

@@ -9,7 +9,10 @@ import { ProfileModule } from './profile/profile.module';
   imports: [
     UsersModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI, { useCreateIndex: true }),
+    MongooseModule.forRoot(process.env.MONGODB_URI, {
+      useCreateIndex: true,
+      useFindAndModify: true,
+    }),
     AuthModule,
     ProfileModule,
   ],
