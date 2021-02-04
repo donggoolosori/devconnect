@@ -21,7 +21,10 @@ export class ProfileService {
     return profile;
   }
 
-  async createProfile(createProfileDto: CreateProfileDto, id: User) {
+  async createProfile(
+    createProfileDto: CreateProfileDto,
+    id: User,
+  ): Promise<Profile> {
     // destructure the request
     const {
       website,
@@ -65,5 +68,13 @@ export class ProfileService {
     }
     profile = new this.profileModel(profileFields);
     return profile.save();
+  }
+
+  async getAllProfiles(): Promise<Profile[]> {
+    const profiles = await this.profileModel
+      .find()
+      .populate('user', ['name', 'avatar']);
+
+    return profiles;
   }
 }

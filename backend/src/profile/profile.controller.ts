@@ -25,7 +25,15 @@ export class ProfileController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  createProfile(@Body() createProfileDto: CreateProfileDto, @Request() req) {
+  createProfile(
+    @Body() createProfileDto: CreateProfileDto,
+    @Request() req,
+  ): Promise<Profile> {
     return this.profileService.createProfile(createProfileDto, req.user.id);
+  }
+
+  @Get()
+  getAllProfiles(): Promise<Profile[]> {
+    return this.profileService.getAllProfiles();
   }
 }
