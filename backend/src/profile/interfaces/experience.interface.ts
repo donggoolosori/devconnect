@@ -1,4 +1,6 @@
 export interface Experience {
+  _id: any;
+
   title: string;
 
   company: string;

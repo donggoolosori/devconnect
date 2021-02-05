@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateExperienceDto {
+  _id: any;
   @IsNotEmpty()
   title: string;
 

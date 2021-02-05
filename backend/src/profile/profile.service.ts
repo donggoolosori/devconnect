@@ -113,6 +113,12 @@ export class ProfileService {
   }
 
   async deleteExperience(user_id: User, exp_id: string) {
-    const profile = await this.profileModel.findOne({});
+    const profile = await this.profileModel.findOne({ user: user_id });
+
+    profile.experience = profile.experience.filter(
+      (exp) => exp._id.toString() !== exp_id,
+    );
+
+    return await profile.save();
   }
 }
