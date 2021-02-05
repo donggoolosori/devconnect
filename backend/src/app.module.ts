@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ProfileModule } from './profile/profile.module';
       useCreateIndex: true,
       useFindAndModify: true,
     }),
+    PostModule,
   ],
 })
 export class AppModule {}
