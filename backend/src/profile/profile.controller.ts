@@ -113,4 +113,12 @@ export class ProfileController {
   deleteEducation(@Param('exp_id') exp_id: string, @Request() req) {
     return this.profileService.deleteEducation(req.user.id, exp_id);
   }
+
+  // @route    Get profile/github/:username
+  // @desc     Get user repos from github
+  // @access   Public
+  @Get('/github/:username')
+  getGithubRepos(@Param('username') username): Promise<any> {
+    return this.profileService.getGithubRepos(username);
+  }
 }

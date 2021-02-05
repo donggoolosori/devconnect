@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import axios from 'axios';
 import { Model } from 'mongoose';
 import { normalize } from 'path';
 import { User, UserDocument } from 'src/users/schema/User.schema';
@@ -141,5 +142,21 @@ export class ProfileService {
     );
 
     return await profile.save();
+  }
+
+  async getGithubRepos(username: string): Promise<any> {
+    const uri = encodeURI(
+      `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc`,
+    );
+    const headers = {
+      'user-agent': 'node.js',
+      Authorization: `token ${process.env.GITHUB_TOKEN}`,
+    };
+    try {
+      const githubResponse = await axios.get(uri, { headers });
+      return githubResponse.data;
+    } catch (error) {
+      throw new BadRequestException('No Github profile found');
+    }
   }
 }

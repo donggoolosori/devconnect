@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/users/schema/User.schema';
 import { ProfileController } from './profile.controller';
@@ -11,6 +12,7 @@ import { ProfileSchema } from './schema/Profile.schema';
       { name: 'Profile', schema: ProfileSchema },
       { name: User.name, schema: UserSchema },
     ]),
+    ConfigModule.forRoot(),
   ],
   controllers: [ProfileController],
   providers: [ProfileService],
