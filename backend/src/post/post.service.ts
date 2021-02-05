@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -7,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/users/schema/User.schema';
 import { CreatePostDto } from './dto/create-post.dto';
+import { Like } from './interfaces/like.interface';
 import { PostDocument } from './interfaces/post.interface';
 
 @Injectable()
@@ -63,5 +65,31 @@ export class PostService {
     await post.remove();
     // Return message
     return { msg: 'Post Removed' };
+  }
+
+  async likePost(post_id: string, user_id: any): Promise<Like[]> {
+    try {
+      const post = await this.postModel.findById(post_id);
+      // Check post existence
+      if (!post) {
+        throw 'notfound';
+      }
+      // Check if the post has already been liked
+      if (post.likes.some((like) => like.user.toString() === user_id)) {
+        throw 'alreadyLiked';
+      }
+      post.likes.unshift({ user: user_id });
+
+      await post.save();
+
+      return post.likes;
+    } catch (err) {
+      if (err === 'alreadyLiked') {
+        throw new BadRequestException('Post already liked');
+      }
+      if (err.kind === 'ObjectId' || err === 'notfound') {
+        throw new NotFoundException('Post not found');
+      }
+    }
   }
 }

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Request,
   UseGuards,
   UsePipes,
@@ -12,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreatePostDto } from './dto/create-post.dto';
+import { Like } from './interfaces/like.interface';
 import { PostDocument } from './interfaces/post.interface';
 import { PostService } from './post.service';
 
@@ -54,5 +56,14 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   deletePost(@Param('id') id: string, @Request() req): Promise<any> {
     return this.postService.deletePost(id, req.user.id);
+  }
+
+  // @route    PUT post/like/:id
+  // @desc     Like a post
+  // @access   Private
+  @Put('/like/:post_id')
+  @UseGuards(JwtAuthGuard)
+  likePost(@Param('post_id') post_id: string, @Request() req): Promise<Like[]> {
+    return this.postService.likePost(post_id, req.user.id);
   }
 }
