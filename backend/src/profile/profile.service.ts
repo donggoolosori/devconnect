@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { normalize } from 'path';
 import { User, UserDocument } from 'src/users/schema/User.schema';
+import { CreateEducationDto } from './dto/create-education.dto';
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './interfaces/profile.interface';
@@ -116,6 +117,26 @@ export class ProfileService {
     const profile = await this.profileModel.findOne({ user: user_id });
 
     profile.experience = profile.experience.filter(
+      (exp) => exp._id.toString() !== exp_id,
+    );
+
+    return await profile.save();
+  }
+
+  async addEducation(
+    createEducationDto: CreateEducationDto,
+    user_id: User,
+  ): Promise<Profile> {
+    const profile = await this.profileModel.findOne({ user: user_id });
+    profile.education.unshift(createEducationDto);
+
+    return await profile.save();
+  }
+
+  async deleteEducation(user_id: User, exp_id: string) {
+    const profile = await this.profileModel.findOne({ user: user_id });
+
+    profile.education = profile.education.filter(
       (exp) => exp._id.toString() !== exp_id,
     );
 
