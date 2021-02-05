@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -17,7 +18,7 @@ import { PostService } from './post.service';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  // @route    POST api/posts
+  // @route    POST a post
   // @desc     Create a post
   // @access   Private
   @Post()
@@ -27,12 +28,21 @@ export class PostController {
     return this.postService.createPost(createPostDto, req.user.id);
   }
 
-  // @route    GET api/posts
+  // @route    GET post
   // @desc     Get all posts
   // @access   Private
   @Get()
   @UseGuards(JwtAuthGuard)
   getAllPosts(): Promise<PostDocument[]> {
     return this.postService.getAllPosts();
+  }
+
+  // @route    GET post/:id
+  // @desc     Get all posts
+  // @access   Private
+  @Get('/:id')
+  @UseGuards(JwtAuthGuard)
+  getPostById(@Param('id') id: string): Promise<PostDocument> {
+    return this.postService.getPostById(id);
   }
 }
