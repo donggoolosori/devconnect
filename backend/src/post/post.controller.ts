@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -38,11 +39,20 @@ export class PostController {
   }
 
   // @route    GET post/:id
-  // @desc     Get all posts
+  // @desc     Get a post by post ID
   // @access   Private
   @Get('/:id')
   @UseGuards(JwtAuthGuard)
   getPostById(@Param('id') id: string): Promise<PostDocument> {
     return this.postService.getPostById(id);
+  }
+
+  // @route    DELETE post
+  // @desc     Delete a post
+  // @access   Private
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  deletePost(@Param('id') id: string, @Request() req): Promise<any> {
+    return this.postService.deletePost(id, req.user.id);
   }
 }
