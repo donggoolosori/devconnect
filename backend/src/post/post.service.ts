@@ -85,7 +85,35 @@ export class PostService {
       return post.likes;
     } catch (err) {
       if (err === 'alreadyLiked') {
-        throw new BadRequestException('Post already liked');
+        throw new BadRequestException('Post is already liked');
+      }
+      if (err.kind === 'ObjectId' || err === 'notfound') {
+        throw new NotFoundException('Post not found');
+      }
+    }
+  }
+
+  async unlikePost(post_id: string, user_id: any): Promise<Like[]> {
+    try {
+      const post = await this.postModel.findById(post_id);
+      // Check post existence
+      if (!post) {
+        throw 'notfound';
+      }
+      // Check if the post has already been unliked
+      if (post.likes.every((like) => like.user.toString() !== user_id)) {
+        throw 'NotLiked';
+      }
+      post.likes = post.likes.filter(
+        (like) => like.user.toString() !== user_id,
+      );
+
+      await post.save();
+
+      return post.likes;
+    } catch (err) {
+      if (err === 'NotLiked') {
+        throw new BadRequestException('Post is already unliked');
       }
       if (err.kind === 'ObjectId' || err === 'notfound') {
         throw new NotFoundException('Post not found');

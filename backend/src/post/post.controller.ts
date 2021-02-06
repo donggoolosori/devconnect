@@ -66,4 +66,16 @@ export class PostController {
   likePost(@Param('post_id') post_id: string, @Request() req): Promise<Like[]> {
     return this.postService.likePost(post_id, req.user.id);
   }
+
+  // @route    PUT post/unlike/:id
+  // @desc     UnLike a post
+  // @access   Private
+  @Put('/unlike/:post_id')
+  @UseGuards(JwtAuthGuard)
+  unlikePost(
+    @Param('post_id') post_id: string,
+    @Request() req,
+  ): Promise<Like[]> {
+    return this.postService.unlikePost(post_id, req.user.id);
+  }
 }
