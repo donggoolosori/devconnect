@@ -130,18 +130,67 @@ export class PostService {
   ) {
     const { text } = createCommentDto;
     const user = await this.userModel.findById(user_id);
-    const post = await this.postModel.findById(post_id);
+    try {
+      const post = await this.postModel.findById(post_id);
+      if (!post) {
+        throw 'notfound';
+      }
+      const comment = {
+        user: user_id,
+        name: user.name,
+        text,
+        avatar: user.avatar,
+      };
 
-    const comment = {
-      user: user_id,
-      name: user.name,
-      text,
-      avatar: user.avatar,
-    };
+      post.comments.unshift(comment);
 
-    post.comments.unshift(comment);
+      await post.save();
+      return post.comments;
+    } catch (err) {
+      if (err.kind === 'ObjectId' || err === 'notfound') {
+        throw new NotFoundException('Post not found');
+      }
+    }
+  }
 
-    await post.save();
-    return post.comments;
+  async deleteComment(post_id: string, comment_id: string, user_id: string) {
+    try {
+      // find post
+      const post = await this.postModel.findById(post_id);
+      if (!post) {
+        throw 'PostNotFound';
+      }
+
+      // find comment
+      const comment = post.comments.find(
+        (comment) => comment.id === comment_id,
+      );
+      if (!comment) {
+        throw 'CommentNotFound';
+      }
+
+      // Check User
+      if (comment.user.toString() !== user_id) {
+        throw 'UnAuth';
+      }
+      // delete comment
+      post.comments = post.comments.filter(
+        (comment) => comment.id !== comment_id,
+      );
+
+      await post.save();
+
+      return post.comments;
+    } catch (err) {
+      if (err.kind === 'ObjectId' || err === 'PostNotFound') {
+        throw new NotFoundException('Post not found');
+      }
+      if (err === 'CommentNotFound') {
+        throw new NotFoundException('Comment not found');
+      }
+      if (err === 'UnAuth') {
+        throw new UnauthorizedException();
+      }
+    }
   }
 }

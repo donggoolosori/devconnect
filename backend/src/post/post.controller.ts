@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   Request,
   UseGuards,
   UsePipes,
@@ -96,5 +97,18 @@ export class PostController {
       post_id,
       createCommentDto,
     );
+  }
+
+  // @route    DELETE posts/comment/:post_id/:comment_id
+  // @desc     Delete comment
+  // @access   Private
+  @Delete('comment/:post_id/:comment_id')
+  @UseGuards(JwtAuthGuard)
+  deleteComment(
+    @Param('post_id') post_id: string,
+    @Param('comment_id') comment_id: string,
+    @Request() req,
+  ) {
+    return this.postService.deleteComment(post_id, comment_id, req.user.id);
   }
 }
