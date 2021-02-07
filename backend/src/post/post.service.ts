@@ -7,7 +7,9 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/users/schema/User.schema';
+import { CreateCommentDto } from './dto/create-commnet.dto';
 import { CreatePostDto } from './dto/create-post.dto';
+import { Comment } from './interfaces/comment.interface';
 import { Like } from './interfaces/like.interface';
 import { PostDocument } from './interfaces/post.interface';
 
@@ -119,5 +121,27 @@ export class PostService {
         throw new NotFoundException('Post not found');
       }
     }
+  }
+
+  async commentOnPost(
+    user_id: User,
+    post_id: string,
+    createCommentDto: CreateCommentDto,
+  ) {
+    const { text } = createCommentDto;
+    const user = await this.userModel.findById(user_id);
+    const post = await this.postModel.findById(post_id);
+
+    const comment = {
+      user: user_id,
+      name: user.name,
+      text,
+      avatar: user.avatar,
+    };
+
+    post.comments.unshift(comment);
+
+    await post.save();
+    return post.comments;
   }
 }

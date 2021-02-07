@@ -12,6 +12,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateCommentDto } from './dto/create-commnet.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Like } from './interfaces/like.interface';
 import { PostDocument } from './interfaces/post.interface';
@@ -77,5 +78,23 @@ export class PostController {
     @Request() req,
   ): Promise<Like[]> {
     return this.postService.unlikePost(post_id, req.user.id);
+  }
+
+  // @route    PUT post/comment/:post_id
+  // @desc     Comment on a post
+  // @access   Private
+  @Put('/comment/:post_id')
+  @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  commentOnPost(
+    @Param('post_id') post_id: string,
+    @Body() createCommentDto: CreateCommentDto,
+    @Request() req,
+  ) {
+    return this.postService.commentOnPost(
+      req.user.id,
+      post_id,
+      createCommentDto,
+    );
   }
 }
