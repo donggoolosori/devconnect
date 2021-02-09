@@ -4,6 +4,8 @@ import { Navbar } from './components/layout/Navbar';
 import { Landing } from './components/layout/Landing';
 
 import './App.css';
+import { Register } from './components/auth/Register';
+import { Login } from './components/auth/Login';
 
 interface Props {}
 
@@ -13,6 +15,12 @@ export const App: React.FC<Props> = () => {
       <div className="App">
         <Navbar />
         <Route exact path="/" component={Landing} />
+        <section className="container">
+          <Switch>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+          </Switch>
+        </section>
       </div>
     </Router>
   );
