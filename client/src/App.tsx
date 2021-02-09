@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Landing } from './components/layout/Landing';
 
@@ -8,9 +9,11 @@ interface Props {}
 
 export const App: React.FC<Props> = () => {
   return (
-    <div className="App">
-      <Navbar />
-      <Landing />
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Route exact path="/" component={Landing} />
+      </div>
+    </Router>
   );
 };
