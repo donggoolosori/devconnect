@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {}
 
@@ -28,7 +29,7 @@ export const Register: React.FC<Props> = () => {
     if (password !== password2) {
       console.log('Password do not match');
     } else {
-      console.log(formData);
+      console.log('Success');
     }
   };
 
@@ -83,7 +84,7 @@ export const Register: React.FC<Props> = () => {
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Already have an account? <a href="login.html">Sign In</a>
+        Already have an account? <Link to="/login">Sign In</Link>
       </p>
     </>
   );
