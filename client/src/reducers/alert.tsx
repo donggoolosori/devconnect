@@ -1,23 +1,21 @@
-import { SET_ALERT, REMOVE_ALERT } from '../actions/types';
+import { setAlert, removeAlert } from '../actions/types';
 
-interface State {
+type AlertState = {
   id: string;
   msg: string;
   alertType: string;
-}
+};
 
-type Action =
-  | { type: 'SET_ALERT'; payload: string }
-  | { type: 'REMOVE_ALERT'; payload: string };
+type AlertAction = ReturnType<typeof setAlert> | ReturnType<typeof removeAlert>;
 
-function alertReducer(state: State[], action: Action) {
-  const { type, payload } = action;
+const initialState: AlertState[] = [];
 
-  switch (type) {
-    case SET_ALERT:
-      return [...state, payload];
-    case REMOVE_ALERT:
-      return state.filter((alert) => alert.id !== payload);
+function alertReducer(state: AlertState[] = initialState, action: AlertAction) {
+  switch (action.type) {
+    case 'SET_ALERT':
+      return [...state, action.payload];
+    case 'REMOVE_ALERT':
+      return state.filter((alert) => alert.id !== action.payload);
     default:
       return state;
   }
