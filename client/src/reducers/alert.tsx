@@ -10,7 +10,10 @@ type AlertAction = ReturnType<typeof setAlert> | ReturnType<typeof removeAlert>;
 
 const initialState: AlertState[] = [];
 
-function alertReducer(state: AlertState[] = initialState, action: AlertAction) {
+function alertReducer(
+  state: AlertState[] = initialState,
+  action: AlertAction
+): (string | AlertState)[] {
   switch (action.type) {
     case 'SET_ALERT':
       return [...state, action.payload];
