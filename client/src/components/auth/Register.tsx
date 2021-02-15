@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { rootState } from '../../modules';
 import { setAlert } from '../../modules/alert';
 
 interface Props {}
