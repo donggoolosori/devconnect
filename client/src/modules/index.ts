@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import alert from './alert';
+import alert, { AlertState } from './alert';
 
 export default combineReducers({
   alert,
 });
 
-export type RootState = ReturnType<typeof combineReducers>;
+export type rootState = {
+  alert: AlertState[];
+};

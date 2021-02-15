@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import { uuid } from 'uuidv4';
-import { RootState } from '.';
+import { rootState } from '.';
 
 const SET_ALERT = 'SET_ALERT' as const;
 const REMOVE_ALERT = 'REMOVE_ALERT' as const;
@@ -8,7 +8,7 @@ const REMOVE_ALERT = 'REMOVE_ALERT' as const;
 export const setAlert = (
   msg: string,
   alertType: string
-): ThunkAction<void, RootState, null, AlertAction> => async (dispatch) => {
+): ThunkAction<void, rootState, null, AlertAction> => async (dispatch) => {
   const id: string = uuid();
   dispatch({
     type: SET_ALERT,
@@ -20,24 +20,27 @@ export const removeAlert = (id: string) => ({
   payload: id,
 });
 
-type AlertState = {
+export type AlertState = {
   id: string;
   msg: string;
   alertType: string;
 };
 
 type AlertAction =
-  | { type: 'SET_ALERT'; payload: AlertState }
-  | { type: 'REMOVE_ALERT'; payload: string };
+  | { type: typeof SET_ALERT; payload: AlertState }
+  | { type: typeof REMOVE_ALERT; id: string };
 
 const initialState: AlertState[] = [];
 
-function alertReducer(state: AlertState[] = initialState, action: AlertAction) {
+function alertReducer(
+  state: AlertState[] = initialState,
+  action: AlertAction
+): AlertState[] {
   switch (action.type) {
     case 'SET_ALERT':
       return [...state, action.payload];
     case 'REMOVE_ALERT':
-      return state.filter((alert) => alert.id !== action.payload);
+      return state.filter((alert) => alert.id !== action.id);
     default:
       return state;
   }

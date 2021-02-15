@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { rootState } from '../../modules';
+import { setAlert } from '../../modules/alert';
 
 interface Props {}
 
@@ -11,6 +14,8 @@ interface FormData {
 }
 
 export const Register: React.FC<Props> = () => {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -27,7 +32,7 @@ export const Register: React.FC<Props> = () => {
     e.preventDefault();
 
     if (password !== password2) {
-      console.log('Password do not match');
+      dispatch(setAlert('Passwords do not match', 'danger'));
     } else {
       console.log('Success');
     }
