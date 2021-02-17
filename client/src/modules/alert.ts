@@ -6,6 +6,12 @@ import { rootState } from '.';
 const SET_ALERT = 'SET_ALERT' as const;
 const REMOVE_ALERT = 'REMOVE_ALERT' as const;
 
+// Action type
+type AlertAction =
+  | { type: typeof SET_ALERT; payload: AlertState }
+  | { type: typeof REMOVE_ALERT; id: string };
+
+const initialState: AlertState[] = [];
 // Action Creator
 export const setAlert = (
   msg: string,
@@ -32,22 +38,15 @@ export type AlertState = {
   alertType: string;
 };
 
-// Action type
-type AlertAction =
-  | { type: typeof SET_ALERT; payload: AlertState }
-  | { type: typeof REMOVE_ALERT; id: string };
-
-const initialState: AlertState[] = [];
-
 // Reducer
 function alertReducer(
   state: AlertState[] = initialState,
   action: AlertAction
 ): AlertState[] {
   switch (action.type) {
-    case 'SET_ALERT':
+    case SET_ALERT:
       return [...state, action.payload];
-    case 'REMOVE_ALERT':
+    case REMOVE_ALERT:
       return state.filter((alert) => alert.id !== action.id);
     default:
       return state;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setAlert } from '../../modules/alert';
+import { register } from '../../modules/auth';
 
 interface Props {}
 
@@ -33,7 +34,7 @@ export const Register: React.FC<Props> = () => {
     if (password !== password2) {
       dispatch(setAlert('Passwords do not match', 'danger'));
     } else {
-      console.log('Success');
+      dispatch(register(name, email, password));
     }
   };
 
@@ -51,7 +52,6 @@ export const Register: React.FC<Props> = () => {
             name="name"
             value={name}
             onChange={onChange}
-            required
           />
         </div>
         <div className="form-group">
