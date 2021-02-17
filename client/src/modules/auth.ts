@@ -50,6 +50,7 @@ export const loadUser = (): ThunkAction<
       payload: res.data,
     });
   } catch (err) {
+    console.log(err.response.data.message);
     dispatch({
       type: AUTH_ERROR,
     });
