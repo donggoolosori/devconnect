@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { rootState } from '../../modules';
 import { setAlert } from '../../modules/alert';
 import { register } from '../../modules/auth';
 
@@ -14,6 +15,9 @@ interface FormData {
 }
 
 export const Register: React.FC<Props> = () => {
+  const isAuthenticated = useSelector(
+    (state: rootState) => state.auth.isAuthenticated
+  );
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState<FormData>({
@@ -37,6 +41,9 @@ export const Register: React.FC<Props> = () => {
       dispatch(register(name, email, password));
     }
   };
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <>
