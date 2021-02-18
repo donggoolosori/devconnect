@@ -11,7 +11,6 @@ type AlertAction =
   | { type: typeof SET_ALERT; payload: AlertState }
   | { type: typeof REMOVE_ALERT; id: string };
 
-const initialState: AlertState[] = [];
 // Action Creator
 export const setAlert = (
   msg: string,
@@ -37,6 +36,7 @@ export type AlertState = {
   msg: string;
   alertType: string;
 };
+const initialState: AlertState[] = [];
 
 // Reducer
 function alertReducer(
