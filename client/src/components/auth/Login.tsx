@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { login } from '../../modules/auth';
 
 interface Props {}
 
@@ -9,6 +11,7 @@ interface FormData {
 }
 
 export const Login: React.FC<Props> = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -21,8 +24,7 @@ export const Login: React.FC<Props> = () => {
 
   const onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log('Success');
+    dispatch(login(email, password));
   };
 
   return (

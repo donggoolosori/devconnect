@@ -8,6 +8,8 @@ const REGISTER_SUCCESS = 'REGISTER_SUCCESS' as const;
 const REGISTER_FAIL = 'REGISTER_FAIL' as const;
 const USER_LOADED = 'USER_LOADED' as const;
 const AUTH_ERROR = 'AUTH_ERROR' as const;
+const LOGIN_SUCCESS = 'LOGIN_SUCCESS' as const;
+const LOGIN_FAIL = 'LOGIN_FAIL' as const;
 
 export type AuthState = {
   token: string | null;
@@ -28,9 +30,12 @@ type AuthAction =
   | { type: typeof REGISTER_SUCCESS; payload: { token: string } }
   | { type: typeof REGISTER_FAIL }
   | { type: typeof USER_LOADED; payload: any }
-  | { type: typeof AUTH_ERROR };
+  | { type: typeof AUTH_ERROR }
+  | { type: typeof LOGIN_SUCCESS; payload: any }
+  | { type: typeof LOGIN_FAIL };
 
 /* Action Creators */
+
 // Load User
 export const loadUser = (): ThunkAction<
   void,
@@ -72,6 +77,7 @@ export const register = (
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
+    dispatch(loadUser());
 
     console.log('Register Success');
   } catch (err) {
@@ -89,8 +95,39 @@ export const register = (
     });
   }
 };
+// Login User
+export const login = (
+  email: string,
+  password: string
+): ThunkAction<void, rootState, null, AuthAction> => async (dispatch) => {
+  const body = JSON.stringify({ email, password });
 
-// Reducer
+  try {
+    const res = await axios.post('/auth', body);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    dispatch(loadUser());
+    console.log('Login Success');
+  } catch (err) {
+    const errors = err.response.data.message;
+    console.log(errors);
+    if (errors) {
+      if (Array.isArray(errors)) {
+        errors.forEach((error: string) => dispatch(setAlert(error, 'danger')));
+      } else {
+        dispatch(setAlert(errors, 'danger'));
+      }
+    }
+    dispatch({
+      type: LOGIN_FAIL,
+    });
+  }
+};
+
+/*Reducer*/
 function authReducer(
   state: AuthState = initialState,
   action: AuthAction
@@ -104,6 +141,7 @@ function authReducer(
         user: action.payload,
       };
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       const { payload } = action;
       localStorage.setItem('token', payload.token);
       return {
@@ -114,6 +152,7 @@ function authReducer(
       };
     case REGISTER_FAIL:
     case AUTH_ERROR:
+    case LOGIN_FAIL:
       localStorage.removeItem('token');
       return {
         ...state,
