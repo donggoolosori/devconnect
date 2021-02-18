@@ -9,12 +9,11 @@ import { Alert } from './components/layout/Alert';
 import setAuthToken from './utils/setAuthToken';
 import { useDispatch } from 'react-redux';
 import { loadUser } from './modules/auth';
-import { ThunkDispatch } from 'redux-thunk';
 
 interface Props {}
 
 export const App: React.FC<Props> = () => {
-  const dispatch: ThunkDispatch<any, any, any> = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // check for token in local storage

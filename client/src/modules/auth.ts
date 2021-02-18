@@ -10,6 +10,7 @@ const USER_LOADED = 'USER_LOADED' as const;
 const AUTH_ERROR = 'AUTH_ERROR' as const;
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS' as const;
 const LOGIN_FAIL = 'LOGIN_FAIL' as const;
+const LOGOUT = 'LOGOUT' as const;
 
 export type AuthState = {
   token: string | null;
@@ -32,7 +33,8 @@ type AuthAction =
   | { type: typeof USER_LOADED; payload: any }
   | { type: typeof AUTH_ERROR }
   | { type: typeof LOGIN_SUCCESS; payload: any }
-  | { type: typeof LOGIN_FAIL };
+  | { type: typeof LOGIN_FAIL }
+  | { type: typeof LOGOUT };
 
 /* Action Creators */
 
@@ -127,6 +129,16 @@ export const login = (
   }
 };
 
+// Logout
+export const logout = (): ThunkAction<
+  void,
+  rootState,
+  null,
+  AuthAction
+> => async (dispatch) => {
+  dispatch({ type: LOGOUT });
+};
+
 /*Reducer*/
 function authReducer(
   state: AuthState = initialState,
@@ -153,6 +165,7 @@ function authReducer(
     case REGISTER_FAIL:
     case AUTH_ERROR:
     case LOGIN_FAIL:
+    case LOGOUT:
       localStorage.removeItem('token');
       return {
         ...state,
