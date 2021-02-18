@@ -9,6 +9,8 @@ import { Alert } from './components/layout/Alert';
 import setAuthToken from './utils/setAuthToken';
 import { useDispatch } from 'react-redux';
 import { loadUser } from './modules/auth';
+import { Dashboard } from './components/Dashboard/Dashboard';
+import { PrivateRoute } from './components/routing/PrivateRoute';
 
 interface Props {}
 
@@ -28,11 +30,12 @@ export const App: React.FC<Props> = () => {
         <Navbar />
         <Route exact path="/" component={Landing} />
         <section className="container">
+          <Alert />
           <Switch>
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <PrivateRoute exact path="/dashboard" Component={Dashboard} />
           </Switch>
-          <Alert />
         </section>
       </div>
     </Router>
