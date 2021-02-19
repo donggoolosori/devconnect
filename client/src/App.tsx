@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { loadUser } from './modules/auth';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { PrivateRoute } from './components/routing/PrivateRoute';
+import { CreateProfile } from './components/profile-forms/CreateProfile';
 
 interface Props {}
 
@@ -35,6 +36,11 @@ export const App: React.FC<Props> = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" Component={Dashboard} />
+            <PrivateRoute
+              exact
+              path="/create-profile"
+              Component={CreateProfile}
+            />
           </Switch>
         </section>
       </div>
