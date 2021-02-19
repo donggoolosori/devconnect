@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { createProfile } from '../../modules/profile';
 
-interface Props {}
+interface Props extends RouteComponentProps {}
 
-type FormData = {
+export type FormData = {
   company: string;
   website: string;
   location: string;
@@ -33,7 +35,7 @@ const initialState: FormData = {
   instagram: '',
 };
 
-export const CreateProfile: React.FC<Props> = () => {
+export const CreateProfile: React.FC<Props> = (props) => {
   const [formData, setFormData] = useState<FormData>(initialState);
   const {
     company,
@@ -51,7 +53,7 @@ export const CreateProfile: React.FC<Props> = () => {
   } = formData;
 
   const [displaySocialInputs, toggleSocialInputs] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
   const onChange = (
     e: React.ChangeEvent<
       HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
@@ -60,6 +62,7 @@ export const CreateProfile: React.FC<Props> = () => {
 
   const onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(createProfile(formData, false, props));
   };
 
   return (
@@ -70,7 +73,7 @@ export const CreateProfile: React.FC<Props> = () => {
         profile stand out
       </p>
       <small>* = required field</small>
-      <form className="form">
+      <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <select name="status" value={status} onChange={onChange}>
             <option value="0">* Select Professional Status</option>
