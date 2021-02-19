@@ -3,6 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 import { rootState } from '.';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
+import { clearProfile } from './profile';
 
 const REGISTER_SUCCESS = 'REGISTER_SUCCESS' as const;
 const REGISTER_FAIL = 'REGISTER_FAIL' as const;
@@ -137,6 +138,7 @@ export const logout = (): ThunkAction<
   AuthAction
 > => async (dispatch) => {
   dispatch({ type: LOGOUT });
+  dispatch(clearProfile());
 };
 
 /*Reducer*/

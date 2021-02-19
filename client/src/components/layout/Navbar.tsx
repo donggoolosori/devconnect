@@ -8,17 +8,16 @@ interface Props {}
 
 export const Navbar: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, loading } = useSelector(
-    (state: rootState) => state.auth
-  );
+  const { isAuthenticated } = useSelector((state: rootState) => state.auth);
 
-  if (!loading) {
-    console.log('loading false');
-  } else {
-    console.log('loading true');
-  }
   const authLinks = (
     <ul>
+      <li>
+        <Link to="/dashboard">
+          <i className="fas fa-user"></i>{' '}
+          <span className="hide-sm">Dashboard</span>
+        </Link>
+      </li>
       <li>
         <a onClick={() => dispatch(logout())} href="#!">
           <i className="fas fa-sign-out-alt"></i>{' '}

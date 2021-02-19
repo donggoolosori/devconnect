@@ -1,18 +1,39 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { rootState } from '../../modules';
 import { getCurrentProfile } from '../../modules/profile';
+import { Spinner } from '../layout/Spinner';
 
 interface Props {}
 
 export const Dashboard: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const auth = useSelector((state: rootState) => state.auth);
-  const profile = useSelector((state: rootState) => state.profile);
+  const { user } = useSelector((state: rootState) => state.auth);
+  const { profile, loading } = useSelector((state: rootState) => state.profile);
 
   useEffect(() => {
     dispatch(getCurrentProfile());
   }, [dispatch]);
 
-  return <div className="Dashboard">Dashboard</div>;
+  return loading && profile === null ? (
+    <Spinner />
+  ) : (
+    <>
+      <h1 className="large text-primary">Dashboard</h1>
+      <p className="lead">
+        <i className="fas fa-user"></i> Welcome {user && user.name}
+      </p>
+      {profile !== null ? (
+        <>has</>
+      ) : (
+        <>
+          <p>You have not yet setup a profile, please add some info</p>
+          <Link to="/create-profile" className="btn btn-primary my-1">
+            Create Profile
+          </Link>
+        </>
+      )}
+    </>
+  );
 };
