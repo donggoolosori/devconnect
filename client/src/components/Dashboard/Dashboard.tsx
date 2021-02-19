@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { rootState } from '../../modules';
 import { getCurrentProfile } from '../../modules/profile';
 import { Spinner } from '../layout/Spinner';
+import { DashboardActions } from './DashboardAction';
 
 interface Props {}
 
@@ -25,7 +26,9 @@ export const Dashboard: React.FC<Props> = () => {
         <i className="fas fa-user"></i> Welcome {user && user.name}
       </p>
       {profile !== null ? (
-        <>has</>
+        <>
+          <DashboardActions />
+        </>
       ) : (
         <>
           <p>You have not yet setup a profile, please add some info</p>

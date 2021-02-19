@@ -20,10 +20,24 @@ type ProfileAction =
       };
     }
   | { type: typeof CLEAR_PROFILE };
+type Profile = {
+  company: string;
+  website: string;
+  location: string;
+  status: string;
+  skills: string;
+  githubusername: string;
+  bio: string;
+  twitter: string;
+  facebook: string;
+  linkedin: string;
+  youtube: string;
+  instagram: string;
+};
 
 // State type
 export type ProfileState = {
-  profile: any;
+  profile: Profile | null;
   profiles: [];
   repos: [];
   loading: boolean;

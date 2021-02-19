@@ -12,6 +12,7 @@ import { loadUser } from './modules/auth';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { PrivateRoute } from './components/routing/PrivateRoute';
 import { CreateProfile } from './components/profile-forms/CreateProfile';
+import { EditProfile } from './components/profile-forms/EditProfile';
 
 interface Props {}
 
@@ -41,6 +42,7 @@ export const App: React.FC<Props> = () => {
               path="/create-profile"
               Component={CreateProfile}
             />
+            <PrivateRoute exact path="/edit-profile" Component={EditProfile} />
           </Switch>
         </section>
       </div>
