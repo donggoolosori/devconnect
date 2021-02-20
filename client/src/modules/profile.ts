@@ -7,7 +7,8 @@ import { setAlert } from './alert';
 
 const GET_PROFILE = 'GET_PROFILE' as const;
 const PROFILE_ARROR = 'PROFILE_ARROR' as const;
-export const CLEAR_PROFILE = 'CLEAR_PROFILE' as const;
+const CLEAR_PROFILE = 'CLEAR_PROFILE' as const;
+const UPDATE_PROFILE = 'UPDATE_PROFILE' as const;
 
 // Action type
 type ProfileAction =
@@ -19,7 +20,8 @@ type ProfileAction =
         status: number;
       };
     }
-  | { type: typeof CLEAR_PROFILE };
+  | { type: typeof CLEAR_PROFILE }
+  | { type: typeof UPDATE_PROFILE };
 type Profile = {
   company: string;
   website: string;
@@ -106,6 +108,42 @@ export const createProfile = (
     if (!edit) {
       history.push('/dashboard');
     }
+  } catch (err) {
+    const errors = err.response.data.message;
+
+    if (errors) {
+      if (Array.isArray(errors)) {
+        errors.forEach((error: string) => dispatch(setAlert(error, 'danger')));
+      } else {
+        dispatch(setAlert(errors, 'danger'));
+      }
+    }
+
+    dispatch({
+      type: PROFILE_ARROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+// Add Experience
+export const addExperience = (
+  formData: FormData,
+  { history }: Props
+): ThunkAction<void, rootState, null, ProfileAction> => async (dispatch) => {
+  try {
+    const res = await axios.put('/profile/experience', formData);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data,
+    });
+
+    dispatch(setAlert('Experience Added', 'success'));
+
+    history.push('/dashboard');
   } catch (err) {
     const errors = err.response.data.message;
 

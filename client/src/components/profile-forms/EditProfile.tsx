@@ -39,6 +39,7 @@ const initialState: FormData = {
 export const EditProfile: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const { profile, loading } = useSelector((state: rootState) => state.profile);
+  const [formData, setFormData] = useState<FormData>(initialState);
 
   useEffect(() => {
     dispatch(getCurrentProfile());
@@ -62,7 +63,6 @@ export const EditProfile: React.FC<Props> = (props) => {
     }
   }, [dispatch, loading]);
 
-  const [formData, setFormData] = useState<FormData>(initialState);
   const {
     company,
     website,
