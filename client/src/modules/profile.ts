@@ -21,7 +21,7 @@ type ProfileAction =
       };
     }
   | { type: typeof CLEAR_PROFILE }
-  | { type: typeof UPDATE_PROFILE };
+  | { type: typeof UPDATE_PROFILE; payload: any };
 type Profile = {
   company: string;
   website: string;
@@ -165,6 +165,42 @@ export const addExperience = (
   }
 };
 
+// Add Education
+export const addEducation = (
+  formData: FormData,
+  { history }: Props
+): ThunkAction<void, rootState, null, ProfileAction> => async (dispatch) => {
+  try {
+    const res = await axios.put('/profile/education', formData);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data,
+    });
+
+    dispatch(setAlert('Education Added', 'success'));
+
+    history.push('/dashboard');
+  } catch (err) {
+    const errors = err.response.data.message;
+
+    if (errors) {
+      if (Array.isArray(errors)) {
+        errors.forEach((error: string) => dispatch(setAlert(error, 'danger')));
+      } else {
+        dispatch(setAlert(errors, 'danger'));
+      }
+    }
+
+    dispatch({
+      type: PROFILE_ARROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
 /* Reducer */
 function profileReducer(
   state: ProfileState = initialState,
@@ -172,12 +208,14 @@ function profileReducer(
 ) {
   switch (action.type) {
     case GET_PROFILE:
+    case UPDATE_PROFILE:
       return {
         ...state,
         profile: action.payload,
         loading: false,
         error: null,
       };
+
     case PROFILE_ARROR:
       return {
         ...state,
