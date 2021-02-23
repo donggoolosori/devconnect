@@ -13,6 +13,7 @@ const GET_PROFILES = 'GET_PROFILES' as const;
 const PROFILE_ARROR = 'PROFILE_ARROR' as const;
 const CLEAR_PROFILE = 'CLEAR_PROFILE' as const;
 const UPDATE_PROFILE = 'UPDATE_PROFILE' as const;
+const GET_REPOS = 'GET_REPOS' as const;
 
 // Action type
 type ProfileAction =
@@ -26,7 +27,8 @@ type ProfileAction =
     }
   | { type: typeof CLEAR_PROFILE }
   | { type: typeof UPDATE_PROFILE; payload: any }
-  | { type: typeof GET_PROFILES; payload: any };
+  | { type: typeof GET_PROFILES; payload: any }
+  | { type: typeof GET_REPOS; payload: any };
 
 type Profile = {
   company: string;
@@ -118,6 +120,25 @@ export const getProfileById = (
     const res = await axios.get(`/profile/${id}`);
 
     dispatch({ type: GET_PROFILE, payload: res.data });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ARROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+// Get github repos
+export const getGithubRepos = (
+  username: string
+): ThunkAction<void, rootState, null, ProfileAction> => async (dispatch) => {
+  try {
+    const res = await axios.get(`/profile/github/${username}`);
+
+    dispatch({ type: GET_REPOS, payload: res.data });
   } catch (err) {
     dispatch({
       type: PROFILE_ARROR,
@@ -376,6 +397,12 @@ function profileReducer(
         ...state,
         profiles: action.payload,
         loading: false,
+      };
+    case GET_REPOS:
+      return {
+        ...state,
+        loading: false,
+        repos: action.payload,
       };
     case PROFILE_ARROR:
       return {
