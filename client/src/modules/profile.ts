@@ -238,6 +238,39 @@ export const deleteExperience = (
   }
 };
 
+// Delete education
+export const deleteEducation = (
+  id: string
+): ThunkAction<void, rootState, null, ProfileAction> => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/profile/education/${id}`);
+
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data,
+    });
+    dispatch(setAlert('Education Removed', 'success'));
+  } catch (err) {
+    const errors = err.response.data.message;
+
+    if (errors) {
+      if (Array.isArray(errors)) {
+        errors.forEach((error: string) => dispatch(setAlert(error, 'danger')));
+      } else {
+        dispatch(setAlert(errors, 'danger'));
+      }
+    }
+
+    dispatch({
+      type: PROFILE_ARROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
 /* Reducer */
 function profileReducer(
   state: ProfileState = initialState,
