@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { rootState } from '../../modules';
-import { getCurrentProfile } from '../../modules/profile';
+import { deleteAccount, getCurrentProfile } from '../../modules/profile';
 import { Spinner } from '../layout/Spinner';
 import { DashboardActions } from './DashboardAction';
 import { Education } from './Education';
@@ -32,6 +32,14 @@ export const Dashboard: React.FC<Props> = () => {
           <DashboardActions />
           <Experience />
           <Education />
+          <div className="my-2">
+            <button
+              className="btn btn-danger"
+              onClick={() => dispatch(deleteAccount())}
+            >
+              <i className="fas fa-user-minus"></i>Delete My Account
+            </button>
+          </div>
         </>
       ) : (
         <>
