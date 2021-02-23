@@ -5,6 +5,7 @@ import { rootState } from '../../modules';
 import { getCurrentProfile } from '../../modules/profile';
 import { Spinner } from '../layout/Spinner';
 import { DashboardActions } from './DashboardAction';
+import { Education } from './Education';
 import { Experience } from './Experience';
 
 interface Props {}
@@ -30,6 +31,7 @@ export const Dashboard: React.FC<Props> = () => {
         <>
           <DashboardActions />
           <Experience />
+          <Education />
         </>
       ) : (
         <>

@@ -28,7 +28,7 @@ export const Experience: React.FC<Props> = () => {
     </tr>
   ));
   return (
-    <td>
+    <>
       <h2 className="my-2">Experience Credentials</h2>
       <table className="table">
         <thead>
@@ -41,6 +41,6 @@ export const Experience: React.FC<Props> = () => {
         </thead>
         <tbody>{experiences}</tbody>
       </table>
-    </td>
+    </>
   );
 };
