@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
 import { Model } from 'mongoose';
 import { normalize } from 'path';
+import { PostDocument } from 'src/post/interfaces/post.interface';
 import { User, UserDocument } from 'src/users/schema/User.schema';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { CreateExperienceDto } from './dto/create-experience.dto';
@@ -14,6 +15,7 @@ export class ProfileService {
   constructor(
     @InjectModel('Profile') private profileModel: Model<Profile>,
     @InjectModel('User') private userModel: Model<UserDocument>,
+    @InjectModel('Post') private postModel: Model<PostDocument>,
   ) {}
 
   async getMyProfile(id: User): Promise<Profile> {
@@ -96,6 +98,8 @@ export class ProfileService {
   }
 
   async deleteProfile(user_id: User): Promise<any> {
+    // Remove posts
+    await this.postModel.deleteMany({ user: user_id });
     // Remove profile
     await this.profileModel.findOneAndDelete({ user: user_id });
     // Remove User
