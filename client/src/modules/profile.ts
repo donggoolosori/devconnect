@@ -30,7 +30,7 @@ type ProfileAction =
   | { type: typeof GET_PROFILES; payload: any }
   | { type: typeof GET_REPOS; payload: any };
 
-type Profile = {
+export type Profile = {
   company: string;
   user: any;
   website: string;
@@ -39,6 +39,13 @@ type Profile = {
   skills: string;
   githubusername: string;
   bio: string;
+  social: {
+    youtube: string | null;
+    twitter: string | null;
+    instagram: string | null;
+    linkedin: string | null;
+    facebook: string | null;
+  } | null;
   twitter: string;
   facebook: string;
   linkedin: string;

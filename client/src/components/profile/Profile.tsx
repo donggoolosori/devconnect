@@ -1,10 +1,10 @@
-import { Match } from '@testing-library/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { rootState } from '../../modules';
 import { getProfileById } from '../../modules/profile';
 import { Spinner } from '../layout/Spinner';
+import { ProfileTop } from './ProfileTop';
 
 interface MatchParams {
   id: string;
@@ -19,7 +19,7 @@ export const Profile: React.FC<RouteComponentProps<MatchParams>> = ({
 
   useEffect(() => {
     dispatch(getProfileById(match.params.id));
-  }, [dispatch]);
+  }, [dispatch, match]);
 
   return (
     <>
@@ -37,6 +37,9 @@ export const Profile: React.FC<RouteComponentProps<MatchParams>> = ({
                 Edit Profile
               </Link>
             )}
+          <div className="profile-grid my-1">
+            <ProfileTop profile={profile} />
+          </div>
         </>
       )}
     </>
