@@ -15,6 +15,7 @@ import { CreateProfile } from './components/profile-forms/CreateProfile';
 import { EditProfile } from './components/profile-forms/EditProfile';
 import { AddExperience } from './components/profile-forms/AddExperience';
 import { AddEducation } from './components/profile-forms/AddEducation';
+import { Profiles } from './components/profiles/Profiles';
 
 interface Props {}
 
@@ -38,6 +39,8 @@ export const App: React.FC<Props> = () => {
           <Switch>
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/profiles" component={Profiles} />
+
             <PrivateRoute exact path="/dashboard" Component={Dashboard} />
             <PrivateRoute
               exact
