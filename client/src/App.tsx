@@ -14,6 +14,7 @@ import { PrivateRoute } from './components/routing/PrivateRoute';
 import { CreateProfile } from './components/profile-forms/CreateProfile';
 import { EditProfile } from './components/profile-forms/EditProfile';
 import { AddExperience } from './components/profile-forms/AddExperience';
+import { AddEducation } from './components/profile-forms/AddEducation';
 
 interface Props {}
 
@@ -48,6 +49,11 @@ export const App: React.FC<Props> = () => {
               exact
               path="/add-experience"
               Component={AddExperience}
+            />
+            <PrivateRoute
+              exact
+              path="/add-education"
+              Component={AddEducation}
             />
           </Switch>
         </section>

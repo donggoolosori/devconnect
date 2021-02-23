@@ -2,6 +2,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { ThunkAction } from 'redux-thunk';
 import { rootState } from '.';
 import axios from '../axios';
+import { EduFormData } from '../components/profile-forms/AddEducation';
 import { ExpFormData } from '../components/profile-forms/AddExperience';
 import { FormData } from '../components/profile-forms/CreateProfile';
 import { setAlert } from './alert';
@@ -168,7 +169,7 @@ export const addExperience = (
 
 // Add Education
 export const addEducation = (
-  formData: FormData,
+  formData: EduFormData,
   { history }: Props
 ): ThunkAction<void, rootState, null, ProfileAction> => async (dispatch) => {
   try {
