@@ -32,6 +32,7 @@ type ProfileAction =
 
 type Profile = {
   company: string;
+  user: any;
   website: string;
   location: string;
   status: string;
@@ -117,7 +118,7 @@ export const getProfileById = (
   id: string
 ): ThunkAction<void, rootState, null, ProfileAction> => async (dispatch) => {
   try {
-    const res = await axios.get(`/profile/${id}`);
+    const res = await axios.get(`/profile/user/${id}`);
 
     dispatch({ type: GET_PROFILE, payload: res.data });
   } catch (err) {
