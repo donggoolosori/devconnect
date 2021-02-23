@@ -37,6 +37,8 @@ type Profile = {
   linkedin: string;
   youtube: string;
   instagram: string;
+  experience: any;
+  education: any;
 };
 
 // State type

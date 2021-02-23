@@ -9,7 +9,7 @@ import { Alert } from './components/layout/Alert';
 import setAuthToken from './utils/setAuthToken';
 import { useDispatch } from 'react-redux';
 import { loadUser } from './modules/auth';
-import { Dashboard } from './components/Dashboard/Dashboard';
+import { Dashboard } from './components/dashboard/Dashboard';
 import { PrivateRoute } from './components/routing/PrivateRoute';
 import { CreateProfile } from './components/profile-forms/CreateProfile';
 import { EditProfile } from './components/profile-forms/EditProfile';
