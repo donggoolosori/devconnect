@@ -9,6 +9,7 @@ import { setAlert } from './alert';
 import { dispatchAccountDeleted } from './auth';
 
 const GET_PROFILE = 'GET_PROFILE' as const;
+const GET_PROFILES = 'GET_PROFILES' as const;
 const PROFILE_ARROR = 'PROFILE_ARROR' as const;
 const CLEAR_PROFILE = 'CLEAR_PROFILE' as const;
 const UPDATE_PROFILE = 'UPDATE_PROFILE' as const;
@@ -24,7 +25,8 @@ type ProfileAction =
       };
     }
   | { type: typeof CLEAR_PROFILE }
-  | { type: typeof UPDATE_PROFILE; payload: any };
+  | { type: typeof UPDATE_PROFILE; payload: any }
+  | { type: typeof GET_PROFILES; payload: any };
 
 type Profile = {
   company: string;
@@ -71,6 +73,49 @@ export const getCurrentProfile = (): ThunkAction<
 > => async (dispatch) => {
   try {
     const res = await axios.get('/profile/me');
+
+    dispatch({ type: GET_PROFILE, payload: res.data });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ARROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+// Get All profiles
+export const getProfiles = (): ThunkAction<
+  void,
+  rootState,
+  null,
+  ProfileAction
+> => async (dispatch) => {
+  try {
+    dispatch(clearProfile());
+
+    const res = await axios.get('/profile');
+
+    dispatch({ type: GET_PROFILES, payload: res.data });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ARROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+// Get profile by id
+export const getProfileById = (
+  id: string
+): ThunkAction<void, rootState, null, ProfileAction> => async (dispatch) => {
+  try {
+    const res = await axios.get(`/profile/${id}`);
 
     dispatch({ type: GET_PROFILE, payload: res.data });
   } catch (err) {
@@ -326,7 +371,12 @@ function profileReducer(
         loading: false,
         error: null,
       };
-
+    case GET_PROFILES:
+      return {
+        ...state,
+        profiles: action.payload,
+        loading: false,
+      };
     case PROFILE_ARROR:
       return {
         ...state,
