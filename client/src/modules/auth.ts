@@ -12,6 +12,7 @@ const AUTH_ERROR = 'AUTH_ERROR' as const;
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS' as const;
 const LOGIN_FAIL = 'LOGIN_FAIL' as const;
 const LOGOUT = 'LOGOUT' as const;
+const ACCOUNT_DELETED = 'ACCOUNT_DELETED' as const;
 
 export type AuthState = {
   token: string | null;
@@ -35,7 +36,8 @@ type AuthAction =
   | { type: typeof AUTH_ERROR }
   | { type: typeof LOGIN_SUCCESS; payload: any }
   | { type: typeof LOGIN_FAIL }
-  | { type: typeof LOGOUT };
+  | { type: typeof LOGOUT }
+  | { type: typeof ACCOUNT_DELETED };
 
 /* Action Creators */
 
@@ -141,6 +143,15 @@ export const logout = (): ThunkAction<
   dispatch(clearProfile());
 };
 
+export const dispatchAccountDeleted = (): ThunkAction<
+  void,
+  rootState,
+  null,
+  AuthAction
+> => async (dispatch) => {
+  dispatch({ type: ACCOUNT_DELETED });
+};
+
 /*Reducer*/
 function authReducer(
   state: AuthState = initialState,
@@ -168,6 +179,7 @@ function authReducer(
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
+    case ACCOUNT_DELETED:
       localStorage.removeItem('token');
       return {
         ...state,

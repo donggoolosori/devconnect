@@ -6,6 +6,7 @@ import { EduFormData } from '../components/profile-forms/AddEducation';
 import { ExpFormData } from '../components/profile-forms/AddExperience';
 import { FormData } from '../components/profile-forms/CreateProfile';
 import { setAlert } from './alert';
+import { dispatchAccountDeleted } from './auth';
 
 const GET_PROFILE = 'GET_PROFILE' as const;
 const PROFILE_ARROR = 'PROFILE_ARROR' as const;
@@ -24,6 +25,7 @@ type ProfileAction =
     }
   | { type: typeof CLEAR_PROFILE }
   | { type: typeof UPDATE_PROFILE; payload: any };
+
 type Profile = {
   company: string;
   website: string;
@@ -268,6 +270,45 @@ export const deleteEducation = (
         status: err.response.status,
       },
     });
+  }
+};
+
+// Delete account & profile
+export const deleteAccount = (): ThunkAction<
+  void,
+  rootState,
+  null,
+  ProfileAction
+> => async (dispatch) => {
+  if (window.confirm('Are you sure? This can NOT be undone!')) {
+    try {
+      await axios.delete(`/profile`);
+
+      dispatch({ type: CLEAR_PROFILE });
+      dispatch(dispatchAccountDeleted());
+
+      dispatch(setAlert('Your Account has been permanantly deleted', ''));
+    } catch (err) {
+      const errors = err.response.data.message;
+
+      if (errors) {
+        if (Array.isArray(errors)) {
+          errors.forEach((error: string) =>
+            dispatch(setAlert(error, 'danger'))
+          );
+        } else {
+          dispatch(setAlert(errors, 'danger'));
+        }
+      }
+
+      dispatch({
+        type: PROFILE_ARROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.status,
+        },
+      });
+    }
   }
 };
 

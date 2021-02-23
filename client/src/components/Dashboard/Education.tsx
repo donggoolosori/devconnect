@@ -1,11 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from '../../modules';
 import Moment from 'react-moment';
+import { deleteEducation } from '../../modules/profile';
 
 interface Props {}
 
 export const Education: React.FC<Props> = () => {
+  const dispatch = useDispatch();
   const education = useSelector(
     (state: rootState) => state.profile.profile?.education
   );
@@ -23,7 +25,12 @@ export const Education: React.FC<Props> = () => {
         )}
       </td>
       <td>
-        <button className="btn btn-danger">Delete</button>
+        <button
+          onClick={() => dispatch(deleteEducation(edu._id))}
+          className="btn btn-danger"
+        >
+          Delete
+        </button>
       </td>
     </tr>
   ));
