@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { rootState } from '../../modules';
-import { addLike, Post, removeLike } from '../../modules/post';
+import { addLike, deletePost, Post, removeLike } from '../../modules/post';
 
 interface Props {
   post: Post;
@@ -33,7 +33,7 @@ export const PostItem: React.FC<Props> = ({ post }) => {
           onClick={() => dispatch(addLike(_id))}
         >
           <i className="fas fa-thumbs-up"></i>{' '}
-          <span>{likes.length > 0 && <span>{likes.length}</span>}</span>
+          <span>{likes?.length > 0 && <span>{likes.length}</span>}</span>
         </button>
         <button
           type="button"
@@ -49,7 +49,11 @@ export const PostItem: React.FC<Props> = ({ post }) => {
           )}
         </Link>
         {!auth.loading && user === auth.user._id && (
-          <button type="button" className="btn btn-danger">
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => dispatch(deletePost(_id))}
+          >
             <i className="fas fa-times"></i>
           </button>
         )}

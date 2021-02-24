@@ -1,15 +1,18 @@
 import axios from '../axios';
 import { ThunkAction } from 'redux-thunk';
 import { rootState } from '.';
+import { setAlert } from './alert';
 
 const GET_POSTS = 'GET_POSTS' as const;
 const POST_ERROR = 'POST_ERROR' as const;
 const UPDATE_LIKES = 'UPDATE_LIKES' as const;
+const DELETE_POST = 'DELETE_POST' as const;
 
 type PostAction =
   | { type: typeof GET_POSTS; payload: any }
   | { type: typeof POST_ERROR; payload: any }
-  | { type: typeof UPDATE_LIKES; payload: any };
+  | { type: typeof UPDATE_LIKES; payload: any }
+  | { type: typeof DELETE_POST; payload: string };
 
 export type Like = {
   _id: string;
@@ -120,6 +123,31 @@ export const removeLike = (
   }
 };
 
+// Delete post
+export const deletePost = (
+  post_id: string
+): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
+  try {
+    await axios.delete(`/post/${post_id}`);
+
+    dispatch({
+      type: DELETE_POST,
+      payload: post_id,
+    });
+
+    dispatch(setAlert('Post Removed', 'success'));
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
 /* Reducer */
 const postReducer = (state: PostState = initialState, action: PostAction) => {
   switch (action.type) {
@@ -137,6 +165,13 @@ const postReducer = (state: PostState = initialState, action: PostAction) => {
             ? { ...post, likes: action.payload.likes }
             : post
         ),
+        loading: false,
+      };
+    case DELETE_POST:
+      console.log('Delete post reducer');
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.payload),
         loading: false,
       };
     case POST_ERROR:
