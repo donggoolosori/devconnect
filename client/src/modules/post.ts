@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axios';
 import { ThunkAction } from 'redux-thunk';
 import { rootState } from '.';
 
@@ -32,7 +32,7 @@ export const getPosts = (): ThunkAction<
   PostAction
 > => async (dispatch) => {
   try {
-    const res = await axios.get('/posts');
+    const res = await axios.get('/post');
 
     dispatch({
       type: GET_POSTS,
