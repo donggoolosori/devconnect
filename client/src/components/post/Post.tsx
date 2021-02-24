@@ -16,7 +16,7 @@ export const Post: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
 
   useEffect(() => {
     dispatch(getPost(match.params.post_id));
-  }, [dispatch]);
+  }, [dispatch, match.params.post_id]);
 
   return loading || post === null ? (
     <Spinner />

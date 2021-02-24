@@ -9,6 +9,8 @@ const UPDATE_LIKES = 'UPDATE_LIKES' as const;
 const DELETE_POST = 'DELETE_POST' as const;
 const ADD_POST = 'ADD_POST' as const;
 const GET_POST = 'GET_POST' as const;
+const ADD_COMMENT = 'ADD_COMMENT' as const;
+const REMOVE_COMMENT = 'REMOVE_COMMENT' as const;
 
 type PostAction =
   | { type: typeof GET_POSTS; payload: any }
@@ -16,7 +18,9 @@ type PostAction =
   | { type: typeof UPDATE_LIKES; payload: any }
   | { type: typeof DELETE_POST; payload: string }
   | { type: typeof ADD_POST; payload: Post }
-  | { type: typeof GET_POST; payload: Post };
+  | { type: typeof GET_POST; payload: Post }
+  | { type: typeof ADD_COMMENT; payload: Comment }
+  | { type: typeof REMOVE_COMMENT; payload: string };
 
 export type Like = {
   _id: string;
@@ -199,6 +203,60 @@ export const getPost = (
   }
 };
 
+// Add comment
+export const addComment = (
+  post_id: string,
+  formData: {
+    text: string;
+  }
+): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
+  try {
+    const res = await axios.post(`/post/comment/${post_id}`, formData);
+
+    dispatch({
+      type: ADD_COMMENT,
+      payload: res.data,
+    });
+
+    dispatch(setAlert('Comment Added', 'success'));
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+// Delete comment
+export const deleteComment = (
+  post_id: string,
+  comment_id: string
+): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
+  try {
+    await axios.delete(`/post/comment/${post_id}/${comment_id}`);
+
+    dispatch({
+      type: REMOVE_COMMENT,
+      payload: comment_id,
+    });
+
+    dispatch(setAlert('Comment Removed', 'success'));
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
 /* Reducer */
 const postReducer = (state: PostState = initialState, action: PostAction) => {
   switch (action.type) {
@@ -242,6 +300,23 @@ const postReducer = (state: PostState = initialState, action: PostAction) => {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        loading: false,
+        post: { ...state.post, comments: action.payload },
+      };
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          comments: state.post?.comments.filter(
+            (comment) => comment._id !== action.payload
+          ),
+        },
+        loading: false,
       };
     default:
       return state;
