@@ -4,6 +4,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { rootState } from '../../modules';
 import { getProfileById } from '../../modules/profile';
 import { Spinner } from '../layout/Spinner';
+import { ProfileAbout } from './ProfileAbout';
 import { ProfileTop } from './ProfileTop';
 
 interface MatchParams {
@@ -32,13 +33,14 @@ export const Profile: React.FC<RouteComponentProps<MatchParams>> = ({
           </Link>
           {auth.isAuthenticated &&
             auth.loading === false &&
-            auth.user._id === profile.user._id && (
+            auth.user._id === profile.user!._id && (
               <Link to="/edit-profile" className="btn btn-dark">
                 Edit Profile
               </Link>
             )}
           <div className="profile-grid my-1">
             <ProfileTop profile={profile} />
+            <ProfileAbout profile={profile} />
           </div>
         </>
       )}

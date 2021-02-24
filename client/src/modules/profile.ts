@@ -32,11 +32,15 @@ type ProfileAction =
 
 export type Profile = {
   company: string;
-  user: any;
+  user: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
   website: string;
   location: string;
   status: string;
-  skills: string;
+  skills: any;
   githubusername: string;
   bio: string;
   social: {
