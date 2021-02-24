@@ -8,13 +8,15 @@ const POST_ERROR = 'POST_ERROR' as const;
 const UPDATE_LIKES = 'UPDATE_LIKES' as const;
 const DELETE_POST = 'DELETE_POST' as const;
 const ADD_POST = 'ADD_POST' as const;
+const GET_POST = 'GET_POST' as const;
 
 type PostAction =
   | { type: typeof GET_POSTS; payload: any }
   | { type: typeof POST_ERROR; payload: any }
   | { type: typeof UPDATE_LIKES; payload: any }
   | { type: typeof DELETE_POST; payload: string }
-  | { type: typeof ADD_POST; payload: Post };
+  | { type: typeof ADD_POST; payload: Post }
+  | { type: typeof GET_POST; payload: Post };
 
 export type Like = {
   _id: string;
@@ -175,6 +177,28 @@ export const addPost = (formData: {
   }
 };
 
+// Get posts
+export const getPost = (
+  post_id: string
+): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
+  try {
+    const res = await axios.get(`/post/${post_id}`);
+
+    dispatch({
+      type: GET_POST,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
 /* Reducer */
 const postReducer = (state: PostState = initialState, action: PostAction) => {
   switch (action.type) {
@@ -182,6 +206,12 @@ const postReducer = (state: PostState = initialState, action: PostAction) => {
       return {
         ...state,
         posts: action.payload,
+        loading: false,
+      };
+    case GET_POST:
+      return {
+        ...state,
+        post: action.payload,
         loading: false,
       };
     case ADD_POST:
