@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from '../../modules';
-import { getPosts } from '../../modules/post';
+import { getPosts, Post } from '../../modules/post';
+import { Spinner } from '../layout/Spinner';
+import { PostItem } from './PostItem';
 
 interface Props {}
 
@@ -12,5 +14,20 @@ export const Posts: React.FC<Props> = () => {
   useEffect(() => {
     dispatch(getPosts());
   }, [dispatch]);
-  return <div className="Posts"></div>;
+  return loading ? (
+    <Spinner />
+  ) : (
+    <>
+      <h1 className="larget text-primary">Posts</h1>
+      <p className="lead">
+        <i className="fas fa-user"></i>Welcome to the community
+      </p>
+      {}
+      <div className="posts">
+        {posts.map((post: Post) => (
+          <PostItem key={post._id} post={post} />
+        ))}
+      </div>
+    </>
+  );
 };

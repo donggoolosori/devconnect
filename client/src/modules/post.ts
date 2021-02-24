@@ -9,9 +9,34 @@ type PostAction =
   | { type: typeof GET_POSTS; payload: any }
   | { type: typeof POST_ERROR; payload: any };
 
+export type Like = {
+  _id: string;
+  user: string;
+};
+
+export type Comment = {
+  _id: string;
+  user: string;
+  name: string;
+  text: string;
+  avatar: string;
+  date: string;
+};
+
+export type Post = {
+  _id: string;
+  text: string;
+  name: string;
+  avatar: string;
+  user: string;
+  likes: Like[];
+  comments: Comment[];
+  date: string;
+};
+
 export type PostState = {
-  posts: any;
-  post: any;
+  posts: Post[];
+  post: Post | null;
   loading: boolean;
   error: any;
 };
