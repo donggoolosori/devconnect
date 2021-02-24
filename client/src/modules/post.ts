@@ -4,10 +4,12 @@ import { rootState } from '.';
 
 const GET_POSTS = 'GET_POSTS' as const;
 const POST_ERROR = 'POST_ERROR' as const;
+const UPDATE_LIKES = 'UPDATE_LIKES' as const;
 
 type PostAction =
   | { type: typeof GET_POSTS; payload: any }
-  | { type: typeof POST_ERROR; payload: any };
+  | { type: typeof POST_ERROR; payload: any }
+  | { type: typeof UPDATE_LIKES; payload: any };
 
 export type Like = {
   _id: string;
@@ -74,6 +76,50 @@ export const getPosts = (): ThunkAction<
   }
 };
 
+// Add like
+export const addLike = (
+  post_id: string
+): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
+  try {
+    const res = await axios.put(`/post/like/${post_id}`);
+
+    dispatch({
+      type: UPDATE_LIKES,
+      payload: { post_id, likes: res.data },
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+// Remove like
+export const removeLike = (
+  post_id: string
+): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
+  try {
+    const res = await axios.put(`/post/unlike/${post_id}`);
+
+    dispatch({
+      type: UPDATE_LIKES,
+      payload: { post_id, likes: res.data },
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
 /* Reducer */
 const postReducer = (state: PostState = initialState, action: PostAction) => {
   switch (action.type) {
@@ -81,6 +127,16 @@ const postReducer = (state: PostState = initialState, action: PostAction) => {
       return {
         ...state,
         posts: action.payload,
+        loading: false,
+      };
+    case UPDATE_LIKES:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload.post_id
+            ? { ...post, likes: action.payload.likes }
+            : post
+        ),
         loading: false,
       };
     case POST_ERROR:

@@ -1,15 +1,16 @@
 import React from 'react';
 import Moment from 'react-moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { rootState } from '../../modules';
-import { Post } from '../../modules/post';
+import { addLike, Post, removeLike } from '../../modules/post';
 
 interface Props {
   post: Post;
 }
 
 export const PostItem: React.FC<Props> = ({ post }) => {
+  const dispatch = useDispatch();
   const auth = useSelector((state: rootState) => state.auth);
   const { _id, text, name, avatar, user, likes, comments, date } = post;
 
@@ -26,11 +27,19 @@ export const PostItem: React.FC<Props> = ({ post }) => {
         <p className="post-date">
           Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
         </p>
-        <button type="button" className="btn btn-light">
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={() => dispatch(addLike(_id))}
+        >
           <i className="fas fa-thumbs-up"></i>{' '}
           <span>{likes.length > 0 && <span>{likes.length}</span>}</span>
         </button>
-        <button type="button" className="btn btn-light">
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={() => dispatch(removeLike(_id))}
+        >
           <i className="fas fa-thumbs-down"></i>
         </button>
         <Link to={`/post/${_id}`} className="btn btn-primary">
