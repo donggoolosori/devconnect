@@ -9,7 +9,7 @@ interface Props {}
 export const Experience: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const experience = useSelector(
-    (state: rootState) => state.profile.profile?.experience
+    (state: rootState) => state.profile.profile!.experience
   );
 
   const experiences = experience.map((exp: any) => (

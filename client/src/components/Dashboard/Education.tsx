@@ -12,7 +12,7 @@ export const Education: React.FC<Props> = () => {
     (state: rootState) => state.profile.profile?.education
   );
 
-  const educations = education.map((edu: any) => (
+  const educations = education!.map((edu: any) => (
     <tr key={edu._id}>
       <td>{edu.school}</td>
       <td className="hide-sm">{edu.degree}</td>

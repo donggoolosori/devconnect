@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { rootState } from '../../modules';
-import { getProfileById } from '../../modules/profile';
+import { Education, Experience, getProfileById } from '../../modules/profile';
 import { Spinner } from '../layout/Spinner';
 import { ProfileAbout } from './ProfileAbout';
+import { ProfileEducation } from './ProfileEducation';
+import { ProfileExperience } from './ProfileExperience';
 import { ProfileTop } from './ProfileTop';
 
 interface MatchParams {
@@ -41,6 +43,30 @@ export const Profile: React.FC<RouteComponentProps<MatchParams>> = ({
           <div className="profile-grid my-1">
             <ProfileTop profile={profile} />
             <ProfileAbout profile={profile} />
+            <div className="profile-exp bg-white p-2">
+              <h2 className="text-primary">Experience</h2>
+              {profile.experience.length > 0 ? (
+                <>
+                  {profile.experience.map((exp: Experience) => (
+                    <ProfileExperience key={exp._id} experience={exp} />
+                  ))}
+                </>
+              ) : (
+                <h4>No experience credentials</h4>
+              )}
+            </div>
+            <div className="profile-edu bg-white p-2">
+              <h2 className="text-primary">Education</h2>
+              {profile.education.length > 0 ? (
+                <>
+                  {profile.education.map((edu: Education) => (
+                    <ProfileEducation key={edu._id} education={edu} />
+                  ))}
+                </>
+              ) : (
+                <h4>No Edcuation credentials</h4>
+              )}
+            </div>
           </div>
         </>
       )}

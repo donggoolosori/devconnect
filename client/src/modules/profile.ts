@@ -30,6 +30,28 @@ type ProfileAction =
   | { type: typeof GET_PROFILES; payload: any }
   | { type: typeof GET_REPOS; payload: any };
 
+export type Experience = {
+  current: boolean;
+  _id: string;
+  title: string;
+  company: string;
+  location: string;
+  from: string;
+  to: string | null;
+  description: string;
+};
+
+export type Education = {
+  _id: string;
+  current: boolean;
+  school: string;
+  degree: string;
+  fieldofstudy: string;
+  from: string;
+  to: string;
+  description: string;
+};
+
 export type Profile = {
   company: string;
   user: {
@@ -55,8 +77,8 @@ export type Profile = {
   linkedin: string;
   youtube: string;
   instagram: string;
-  experience: any;
-  education: any;
+  experience: [Experience];
+  education: [Education];
 };
 
 // State type
