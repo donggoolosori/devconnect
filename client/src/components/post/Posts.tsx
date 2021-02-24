@@ -26,7 +26,7 @@ export const Posts: React.FC<Props> = () => {
       <PostForm />
       <div className="posts">
         {posts.map((post: Post) => (
-          <PostItem key={post._id} post={post} />
+          <PostItem key={post._id} post={post} showActions={true} />
         ))}
       </div>
     </>

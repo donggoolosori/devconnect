@@ -177,7 +177,7 @@ export const addPost = (formData: {
   }
 };
 
-// Get posts
+// Get post
 export const getPost = (
   post_id: string
 ): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {

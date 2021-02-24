@@ -18,6 +18,7 @@ import { AddEducation } from './components/profile-forms/AddEducation';
 import { Profiles } from './components/profiles/Profiles';
 import { Profile } from './components/profile/Profile';
 import { Posts } from './components/post/Posts';
+import { Post } from './components/post/Post';
 
 interface Props {}
 
@@ -62,6 +63,7 @@ export const App: React.FC<Props> = () => {
               Component={AddEducation}
             />
             <PrivateRoute exact path="/posts" Component={Posts} />
+            <PrivateRoute exact path="/post/:post_id" Component={Post} />
           </Switch>
         </section>
       </div>
