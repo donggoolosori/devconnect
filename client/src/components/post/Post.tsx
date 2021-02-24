@@ -4,6 +4,8 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { rootState } from '../../modules';
 import { getPost } from '../../modules/post';
 import { Spinner } from '../layout/Spinner';
+import { CommentForm } from './CommentForm';
+import { CommentItem } from './CommentItem';
 import { PostItem } from './PostItem';
 
 interface MatchParams {
@@ -26,6 +28,12 @@ export const Post: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
         Back To Posts
       </Link>
       <PostItem post={post} showActions={false} />
+      <CommentForm post_id={post._id} />
+      <div className="comments">
+        {post.comments.map((comment) => (
+          <CommentItem key={comment._id} comment={comment} post_id={post._id} />
+        ))}
+      </div>
     </>
   );
 };

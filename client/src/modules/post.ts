@@ -211,7 +211,7 @@ export const addComment = (
   }
 ): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
   try {
-    const res = await axios.post(`/post/comment/${post_id}`, formData);
+    const res = await axios.put(`/post/comment/${post_id}`, formData);
 
     dispatch({
       type: ADD_COMMENT,
