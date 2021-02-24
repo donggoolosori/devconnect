@@ -151,11 +151,11 @@ export const deletePost = (
 };
 
 // Add post
-export const addPost = (
-  formData: Post
-): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
+export const addPost = (formData: {
+  text: string;
+}): ThunkAction<void, rootState, null, PostAction> => async (dispatch) => {
   try {
-    const res = await axios.post(`/post`);
+    const res = await axios.post(`/post`, formData);
 
     dispatch({
       type: ADD_POST,
@@ -187,7 +187,7 @@ const postReducer = (state: PostState = initialState, action: PostAction) => {
     case ADD_POST:
       return {
         ...state,
-        posts: [...state.posts, action.payload],
+        posts: [action.payload, ...state.posts],
         loading: false,
       };
     case UPDATE_LIKES:

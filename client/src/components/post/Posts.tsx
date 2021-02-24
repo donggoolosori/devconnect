@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from '../../modules';
 import { getPosts, Post } from '../../modules/post';
 import { Spinner } from '../layout/Spinner';
+import { PostForm } from './PostForm';
 import { PostItem } from './PostItem';
 
 interface Props {}
@@ -22,7 +23,7 @@ export const Posts: React.FC<Props> = () => {
       <p className="lead">
         <i className="fas fa-user"></i>Welcome to the community
       </p>
-      {}
+      <PostForm />
       <div className="posts">
         {posts.map((post: Post) => (
           <PostItem key={post._id} post={post} />
