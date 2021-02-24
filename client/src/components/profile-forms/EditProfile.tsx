@@ -61,7 +61,7 @@ export const EditProfile: React.FC<Props> = (props) => {
         instagram: loading || !profile.instagram ? '' : profile.instagram,
       });
     }
-  }, [dispatch, loading, profile]);
+  }, [dispatch, loading]);
 
   const {
     company,
