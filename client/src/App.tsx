@@ -36,7 +36,7 @@ export const App: React.FC<Props> = () => {
     <Router>
       <div className="App">
         <Navbar />
-        <Route exact path="/" component={Landing} />
+        <Route exact path="/devconnect" component={Landing} />
         <section className="container">
           <Alert />
           <Switch>

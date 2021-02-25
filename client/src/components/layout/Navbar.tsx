@@ -48,7 +48,7 @@ export const Navbar: React.FC<Props> = () => {
   return (
     <nav className="navbar bg-dark">
       <h1>
-        <Link to="/">
+        <Link to="/devconnect">
           <i className="fas fa-code"></i> DevConnector
         </Link>
       </h1>

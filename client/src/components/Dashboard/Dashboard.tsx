@@ -32,14 +32,6 @@ export const Dashboard: React.FC<Props> = () => {
           <DashboardActions />
           <Experience />
           <Education />
-          <div className="my-2">
-            <button
-              className="btn btn-danger"
-              onClick={() => dispatch(deleteAccount())}
-            >
-              <i className="fas fa-user-minus"></i>Delete My Account
-            </button>
-          </div>
         </>
       ) : (
         <>
@@ -49,6 +41,14 @@ export const Dashboard: React.FC<Props> = () => {
           </Link>
         </>
       )}
+      <div className="my-2">
+        <button
+          className="btn btn-danger"
+          onClick={() => dispatch(deleteAccount())}
+        >
+          <i className="fas fa-user-minus"></i>Delete My Account
+        </button>
+      </div>
     </>
   );
 };
