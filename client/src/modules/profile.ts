@@ -14,6 +14,7 @@ const PROFILE_ARROR = 'PROFILE_ARROR' as const;
 const CLEAR_PROFILE = 'CLEAR_PROFILE' as const;
 const UPDATE_PROFILE = 'UPDATE_PROFILE' as const;
 const GET_REPOS = 'GET_REPOS' as const;
+const GITHUB_REPOS_ARROR = 'GITHUB_REPOS_ARROR' as const;
 
 // Action type
 type ProfileAction =
@@ -28,7 +29,8 @@ type ProfileAction =
   | { type: typeof CLEAR_PROFILE }
   | { type: typeof UPDATE_PROFILE; payload: any }
   | { type: typeof GET_PROFILES; payload: any }
-  | { type: typeof GET_REPOS; payload: any };
+  | { type: typeof GET_REPOS; payload: any }
+  | { type: typeof GITHUB_REPOS_ARROR; payload: any };
 
 export type Experience = {
   current: boolean;
@@ -175,7 +177,7 @@ export const getGithubRepos = (
     dispatch({ type: GET_REPOS, payload: res.data });
   } catch (err) {
     dispatch({
-      type: PROFILE_ARROR,
+      type: GITHUB_REPOS_ARROR,
       payload: {
         msg: err.response.statusText,
         status: err.response.status,
@@ -444,6 +446,13 @@ function profileReducer(
         error: action.payload,
         loading: false,
         profile: null,
+      };
+    case GITHUB_REPOS_ARROR:
+      return {
+        ...state,
+        repos: [],
+        error: action.payload,
+        loading: false,
       };
     case CLEAR_PROFILE:
       return {

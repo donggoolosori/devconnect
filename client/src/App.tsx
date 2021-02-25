@@ -33,10 +33,10 @@ export const App: React.FC<Props> = () => {
     dispatch(loadUser());
   }, [dispatch]);
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div className="App">
         <Navbar />
-        <Route exact path="/devconnect" component={Landing} />
+        <Route exact path="/" component={Landing} />
         <section className="container">
           <Alert />
           <Switch>
