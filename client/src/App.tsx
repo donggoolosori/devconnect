@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Landing } from './components/layout/Landing';
 import './App.css';
@@ -33,7 +33,7 @@ export const App: React.FC<Props> = () => {
     dispatch(loadUser());
   }, [dispatch]);
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <div className="App">
         <Navbar />
         <Route exact path="/" component={Landing} />
